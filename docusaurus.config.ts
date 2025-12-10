@@ -11,8 +11,10 @@ const config: Config = {
     v4: true,
   },
 
-  url: 'https://your-github-username.github.io',
-  baseUrl: '/Ai-book/',
+ url: 'https://physical-ai-book-one.vercel.app/',
+baseUrl: '/',
+trailingSlash: false,
+
 
   organizationName: 'your-github-username',
   projectName: 'Ai-book',
