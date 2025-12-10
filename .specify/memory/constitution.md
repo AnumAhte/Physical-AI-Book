@@ -1,55 +1,62 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Physical AI & Humanoid Robotics — Essentials Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Simplicity and Clarity
+This constitution mandates simplicity and clarity in all aspects of the project to ensure fast comprehension for learners. Designs, code, and documentation must prioritize directness and ease of understanding.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Accuracy and Veracity
+All content related to robotics, AI, and Vision-Language-Action (VLA) concepts must be technically accurate and validated against authoritative sources. Misinformation is strictly prohibited.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Minimalist Design
+The user interface and overall build architecture must remain minimalist and lightweight. Avoid unnecessary complexity, heavy dependencies, or resource-intensive components to ensure free-tier friendliness.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Spec-Driven Development (SDD)
+The project will strictly adhere to Spec-Driven Development (Spec-Kit Plus + Claude Code) methodology. All features, plans, and tasks must originate from and be traceable to clear specifications to ensure reproducibility and consistency.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. RAG Chatbot Integrity
+The integrated RAG chatbot functionality must ONLY provide answers sourced directly and exclusively from the textbook content. It is strictly prohibited from generating responses outside the scope of the provided learning material.
 
-### [PRINCIPLE_6_NAME]
+### VI. Modular Architecture
+The project's codebase will maintain a modular architecture, clearly separating concerns into `docs/`, `src/`, `specs/`, and `.claude/commands/` directories. This promotes maintainability, scalability, and independent development.
 
+### VII. CI/CD Readiness
+All development must ensure continuous integration and continuous deployment (CI/CD) readiness. Automated workflows using GitHub Actions and GitHub Pages are central to the project's deployment strategy.
 
-[PRINCIPLE__DESCRIPTION]
+## Key Features & Constraints
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### Key Features
+- Docusaurus textbook with dashboard, nested sidebar, and search.
+- RAG chatbot integration via Claude Code commands.
+- Select-text → Ask AI functionality.
+- Optional features: Urdu translation, personalized chapters.
+- Metadata validation for chapters (JSON Schema).
+- Automated build, test, and deploy pipelines.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### Constraints
+- No heavy GPU usage required; free-tier friendly embeddings.
+- Lightweight vector DB for RAG (Qdrant free-tier or alternative).
+- Deployment to GitHub Pages; backend server optional (Claude commands or FastAPI if needed).
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Success Criteria & Deliverables
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### Success Criteria
+- Build completes without errors.
+- Textbook content accurate and complete.
+- RAG chatbot returns only text-based answers from book.
+- Frontend UI clean, responsive, and interactive.
+- CI/CD pipelines pass with quality gates.
+- Full Spec-Driven workflow enabled (planning, tasks, history, constitution).
+
+### Deliverables
+- `/docs` folder with all chapter markdowns.
+- `/src` folder with React/Docusaurus components.
+- `/specs` + `/.specify` + `/.claude/commands` configured.
+- GitHub Actions workflows for build, test, deploy.
+- RAG chatbot integrated and functional.
+- Quickstart guide for local development.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+This Constitution outlines the foundational principles and operational guidelines for the "Physical AI & Humanoid Robotics — Essentials" project. It supersedes all other practices and documentation. Amendments to this constitution require a clear rationale, documented impact analysis, and approval from core maintainers. All pull requests and code reviews must verify compliance with these principles.
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
-
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2025-12-06 | **Last Amended**: 2025-12-06

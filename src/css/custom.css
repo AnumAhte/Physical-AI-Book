@@ -1,0 +1,150 @@
+/**
+ * Physical AI Textbook - Custom CSS
+ * Based on Infima CSS framework with robotics-themed colors
+ */
+
+:root {
+  /* Primary: Deep Blue for technology/robotics theme */
+  --ifm-color-primary: #1a73e8;
+  --ifm-color-primary-dark: #1765d0;
+  --ifm-color-primary-darker: #165fc4;
+  --ifm-color-primary-darkest: #124ea2;
+  --ifm-color-primary-light: #3183eb;
+  --ifm-color-primary-lighter: #3d8aec;
+  --ifm-color-primary-lightest: #5f9ef0;
+
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  /* Custom robotics accent colors */
+  --robotics-accent: #ff6b35;
+  --simulation-accent: #00c853;
+  --ai-accent: #7c4dff;
+}
+
+[data-theme='dark'] {
+  /* Dark mode: Cyan/Teal for better contrast */
+  --ifm-color-primary: #4dd0e1;
+  --ifm-color-primary-dark: #26c6da;
+  --ifm-color-primary-darker: #00bcd4;
+  --ifm-color-primary-darkest: #00acc1;
+  --ifm-color-primary-light: #80deea;
+  --ifm-color-primary-lighter: #b2ebf2;
+  --ifm-color-primary-lightest: #e0f7fa;
+
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-background-color: #0d1117;
+  --ifm-background-surface-color: #161b22;
+}
+
+/* Hero section styling */
+.hero--primary {
+  background: linear-gradient(135deg, var(--ifm-color-primary-darkest) 0%, var(--ifm-color-primary-dark) 100%);
+}
+
+[data-theme='dark'] .hero--primary {
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1a1f2c 100%);
+}
+
+/* Code block enhancements */
+.prism-code {
+  border-radius: 8px;
+}
+
+/* Sidebar category icons */
+.menu__link--sublist::after {
+  background: var(--ifm-menu-link-sublist-icon) 50% / 1.5rem 1.5rem;
+}
+
+/* Chapter metadata styling */
+.chapter-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--ifm-background-surface-color);
+  border-radius: 8px;
+  border-left: 4px solid var(--ifm-color-primary);
+}
+
+.chapter-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Learning objectives box */
+.learning-objectives {
+  background: linear-gradient(135deg, rgba(26, 115, 232, 0.1) 0%, rgba(26, 115, 232, 0.05) 100%);
+  border: 1px solid var(--ifm-color-primary-lighter);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.learning-objectives h4 {
+  color: var(--ifm-color-primary);
+  margin-top: 0;
+}
+
+/* Prerequisites box */
+.prerequisites {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(255, 107, 53, 0.05) 100%);
+  border: 1px solid var(--robotics-accent);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.prerequisites h4 {
+  color: var(--robotics-accent);
+  margin-top: 0;
+}
+
+/* Simulation/code demo styling */
+.simulation-demo {
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--simulation-accent);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+/* Feature cards on homepage */
+.feature-card {
+  background: var(--ifm-background-surface-color);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Week/chapter progress indicator */
+.week-indicator {
+  display: inline-block;
+  background: var(--ifm-color-primary);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+/* Table of contents enhancements */
+.table-of-contents__link--active {
+  font-weight: 600;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .chapter-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
