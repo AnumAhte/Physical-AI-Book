@@ -12,7 +12,7 @@ This project aims to develop an AI-native textbook focused on Physical AI and Hu
 
 ## Technical Stack
 - Frontend: Docusaurus 3 (React)
-- Backend: FastAPI, Qdrant (vector DB), Neon (Postgres)
+- Backend: FastAPI, Qdrant (vector DB), Cohere
 - CI/CD: GitHub Actions
 
 ## Getting Started
