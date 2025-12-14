@@ -129,11 +129,11 @@
 
 **Purpose**: Error handling, responsiveness, and final validation
 
-- [ ] T036 [P] Add error display component in src/components/Chat/ErrorMessage.tsx
-- [ ] T037 [P] Add mobile-responsive styles in src/css/chat.module.css (media queries)
-- [ ] T038 Update ChatContainer in src/components/Chat/ChatContainer.tsx to display errors from useStreamingChat
-- [ ] T039 Add input validation in ChatInput (prevent empty submissions, max length)
-- [ ] T040 Add keyboard support: Enter to send, Shift+Enter for newline in ChatInput
+- [x] T036 [P] Add error display component in src/components/Chat/ErrorMessage.tsx
+- [x] T037 [P] Add mobile-responsive styles in src/css/chat.module.css (media queries)
+- [x] T038 Update ChatContainer in src/components/Chat/ChatContainer.tsx to display errors from useStreamingChat
+- [x] T039 Add input validation in ChatInput (prevent empty submissions, max length)
+- [x] T040 Add keyboard support: Enter to send, Shift+Enter for newline in ChatInput
 - [ ] T041 Run full quickstart.md validation (both backend and frontend)
 - [ ] T042 Final manual testing: test all edge cases from spec.md (empty questions, long questions, service errors)
 
