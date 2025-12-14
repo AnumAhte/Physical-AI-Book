@@ -22,6 +22,62 @@ The project's codebase will maintain a modular architecture, clearly separating 
 
 ### VII. CI/CD Readiness
 All development must ensure continuous integration and continuous deployment (CI/CD) readiness. Automated workflows using GitHub Actions and GitHub Pages are central to the project's deployment strategy.
+### VIII. Storage & RAG System Requirements (MANDATORY UPDATE)
+❌ SQL / NEON Prohibited
+
+The project MUST NOT use:
+
+Neon
+
+PostgreSQL
+
+Supabase
+
+Any relational database (SQL)
+
+No session logging, history storage, or analytics may rely on SQL.
+
+✔ Allowed Components (Strict)
+
+The project MUST use:
+
+Vector Database
+
+Qdrant Cloud (Free Tier – Mandatory)
+
+All embeddings stored in Qdrant only
+
+No other database allowed
+
+Embedding Provider
+
+Cohere Embeddings (Mandatory)
+
+OpenAI embeddings NOT allowed for RAG
+
+Backend Stack
+
+FastAPI (Required)
+
+No SQL drivers
+
+Only Qdrant + Cohere clients
+
+RAG Pipeline Rules
+
+Chunk → Cohere Embeddings → Qdrant
+
+Query → Qdrant → Cohere Rerank → OpenAI Agent Response
+
+Answers MUST ONLY come from textbook content
+
+Zero hallucination enforced
+
+Select-Text → Ask AI
+
+Highlighted text must bypass Qdrant
+
+Cohere rerank only on highlight content
 
 ## Key Features & Constraints
 
