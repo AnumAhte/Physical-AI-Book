@@ -1,0 +1,287 @@
+openapi: 3.1.0
+info:
+  title: Physical AI Textbook RAG API
+  description: |
+    RAG (Retrieval-Augmented Generation) API for the Physical AI & Humanoid Robotics textbook.
+    Uses Cohere for embeddings/reranking and Qdrant for vector storage.
+
+    **Constitution Compliance:**
+    - NO SQL/PostgreSQL/Neon
+    - Answers ONLY from textbook content
+    - Zero hallucination enforced
+  version: 1.0.0
+  contact:
+    name: Physical AI Textbook Team
+
+servers:
+  - url: http://localhost:8000
+    description: Local development
+  - url: https://physical-ai-book-one.vercel.app/api
+    description: Production (Vercel)
+
+tags:
+  - name: RAG
+    description: Retrieval-Augmented Generation endpoints
+  - name: Health
+    description: Service health checks
+
+paths:
+  /api/ask:
+    post:
+      tags:
+        - RAG
+      summary: Ask a question about the textbook
+      description: |
+        General question-answering endpoint. Performs:
+        1. Cohere embedding of the question
+        2. Qdrant vector search (top 10)
+        3. Cohere rerank (top 5)
+        4. LLM response generation with citations
+      operationId: askQuestion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AskRequest'
+            examples:
+              basic:
+                summary: Basic question
+                value:
+                  question: "What is Physical AI?"
+                  top_k: 5
+              detailed:
+                summary: Detailed question
+                value:
+                  question: "How do ROS 2 nodes communicate with each other?"
+                  top_k: 10
+      responses:
+        '200':
+          description: Successful response with answer and citations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RAGResponse'
+              example:
+                answer: "Physical AI refers to artificial intelligence systems that interact with the physical world through embodied agents. These systems can perceive their environment through sensors, reason about spatial relationships, and act through actuators."
+                citations:
+                  - chapter: intro
+                    chapter_title: Introduction to Physical AI
+                    source_file: docs/week-01-02-intro/intro.md
+                    excerpt: "Physical AI refers to artificial intelligence systems that interact with the physical world..."
+                confidence: 0.92
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: Service unavailable (Qdrant/Cohere down)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/ask-selected:
+    post:
+      tags:
+        - RAG
+      summary: Ask about selected/highlighted text
+      description: |
+        Question about user-selected text. Bypasses Qdrant search per constitution.
+        Performs:
+        1. Split selected text into chunks
+        2. Cohere rerank: question vs chunks
+        3. LLM response from top-ranked chunks only
+      operationId: askSelected
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AskSelectedRequest'
+            example:
+              question: "Explain this in simpler terms"
+              selected_text: "ROS 2 nodes communicate using a publish-subscribe pattern where nodes can publish messages to topics and other nodes can subscribe to receive those messages."
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RAGResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      description: Check if the API and its dependencies are healthy
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: healthy
+                services:
+                  qdrant: connected
+                  cohere: connected
+                version: "1.0.0"
+        '503':
+          description: Service is unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+components:
+  schemas:
+    AskRequest:
+      type: object
+      required:
+        - question
+      properties:
+        question:
+          type: string
+          minLength: 3
+          maxLength: 1000
+          description: The question to ask about the textbook
+          example: "What is Physical AI?"
+        top_k:
+          type: integer
+          minimum: 1
+          maximum: 20
+          default: 5
+          description: Number of results after reranking
+
+    AskSelectedRequest:
+      type: object
+      required:
+        - question
+        - selected_text
+      properties:
+        question:
+          type: string
+          minLength: 3
+          maxLength: 1000
+          description: Question about the selected text
+        selected_text:
+          type: string
+          minLength: 10
+          maxLength: 10000
+          description: The text highlighted/selected by the user
+
+    RAGResponse:
+      type: object
+      required:
+        - answer
+        - citations
+        - confidence
+      properties:
+        answer:
+          type: string
+          description: The generated answer based on textbook content
+        citations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Citation'
+          description: Sources used to generate the answer
+        confidence:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Confidence score of the answer
+
+    Citation:
+      type: object
+      required:
+        - chapter
+        - chapter_title
+        - source_file
+        - excerpt
+      properties:
+        chapter:
+          type: string
+          description: Chapter slug
+          example: intro
+        chapter_title:
+          type: string
+          description: Human-readable chapter title
+          example: Introduction to Physical AI
+        source_file:
+          type: string
+          description: Path to source file
+          example: docs/week-01-02-intro/intro.md
+        excerpt:
+          type: string
+          maxLength: 200
+          description: Relevant excerpt from the source
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+        services:
+          type: object
+          properties:
+            qdrant:
+              type: string
+              enum: [connected, disconnected]
+            cohere:
+              type: string
+              enum: [connected, disconnected]
+        version:
+          type: string
+          example: "1.0.0"
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error code
+          example: RATE_LIMIT_EXCEEDED
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: object
+          description: Additional error details
+
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication (optional for MVP)

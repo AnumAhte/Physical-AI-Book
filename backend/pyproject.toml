@@ -5,14 +5,14 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "physical-ai-textbook-backend"
 version = "1.0.0"
-description = "RAG Backend for Physical AI & Humanoid Robotics Textbook"
+description = "RAG Backend for Physical AI & Humanoid Robotics Textbook (Cohere + Qdrant)"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
     {name = "Physical AI Textbook Team"}
 ]
-keywords = ["rag", "chatbot", "fastapi", "robotics", "ai", "textbook"]
+keywords = ["rag", "chatbot", "fastapi", "robotics", "ai", "textbook", "cohere", "qdrant"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Education",
@@ -25,29 +25,28 @@ classifiers = [
     "Topic :: Education",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
+# Constitution Section VIII: NO SQL dependencies
 dependencies = [
     "fastapi>=0.109.0",
     "uvicorn[standard]>=0.27.0",
     "python-multipart>=0.0.6",
     "qdrant-client>=1.7.0",
-    "asyncpg>=0.29.0",
-    "sqlalchemy[asyncio]>=2.0.25",
-    "sentence-transformers>=2.2.2",
+    "cohere>=5.0.0",
     "anthropic>=0.18.0",
+    "openai>=1.12.0",
     "markdown>=3.5.0",
     "beautifulsoup4>=4.12.0",
-    "langchain>=0.1.0",
     "langchain-text-splitters>=0.0.1",
     "python-dotenv>=1.0.0",
     "pydantic>=2.5.0",
     "pydantic-settings>=2.1.0",
+    "httpx>=0.26.0",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=7.4.0",
     "pytest-asyncio>=0.23.0",
-    "httpx>=0.26.0",
     "black>=23.0.0",
     "ruff>=0.1.0",
     "mypy>=1.8.0",

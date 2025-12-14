@@ -1,0 +1,175 @@
+openapi: 3.1.0
+info:
+  title: Physical AI Textbook RAG API - Streaming Extension
+  description: |
+    Streaming endpoint extension for the RAG Chatbot feature.
+    Adds Server-Sent Events (SSE) support for real-time response streaming.
+  version: 1.1.0
+  contact:
+    name: Physical AI Textbook
+    url: https://physical-ai-book-one.vercel.app
+
+servers:
+  - url: http://localhost:8000
+    description: Local development
+  - url: https://api.physical-ai-book.vercel.app
+    description: Production
+
+paths:
+  /api/ask/stream:
+    post:
+      operationId: askQuestionStream
+      summary: Ask a question with streaming response
+      description: |
+        Performs RAG pipeline and streams the response via Server-Sent Events.
+
+        Pipeline steps:
+        1. Embed question with Cohere
+        2. Search Qdrant for similar chunks
+        3. Rerank results with Cohere
+        4. Stream response from OpenAI gpt-4o-mini
+
+        Response format: SSE with JSON payloads
+      tags:
+        - RAG
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AskRequest'
+            example:
+              question: "What is Physical AI?"
+              top_k: 5
+      responses:
+        '200':
+          description: Streaming response via Server-Sent Events
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                description: |
+                  SSE stream with JSON payloads.
+                  Each event is prefixed with "data: " and ends with "\n\n".
+              examples:
+                streaming:
+                  summary: Example SSE stream
+                  value: |
+                    data: {"content": "Physical ", "done": false}
+
+                    data: {"content": "AI refers to ", "done": false}
+
+                    data: {"content": "artificial intelligence systems that interact with the physical world.", "done": false}
+
+                    data: {"content": "", "done": true, "citations": [{"chapter": "intro", "chapter_title": "Introduction", "source_file": "docs/intro.md", "excerpt": "Physical AI refers to..."}], "confidence": 0.92}
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    AskRequest:
+      type: object
+      required:
+        - question
+      properties:
+        question:
+          type: string
+          minLength: 3
+          maxLength: 1000
+          description: The question to ask about the textbook
+        top_k:
+          type: integer
+          minimum: 1
+          maximum: 20
+          default: 5
+          description: Number of results to return after reranking
+
+    StreamChunk:
+      type: object
+      description: A single chunk in the SSE stream
+      properties:
+        content:
+          type: string
+          description: Partial response text
+        done:
+          type: boolean
+          default: false
+          description: True when streaming is complete
+        citations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Citation'
+          description: Source references (only on final chunk)
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: Response confidence score (only on final chunk)
+        error:
+          type: string
+          description: Error message if streaming failed
+
+    Citation:
+      type: object
+      required:
+        - chapter
+        - chapter_title
+        - source_file
+        - excerpt
+      properties:
+        chapter:
+          type: string
+          description: Chapter identifier
+        chapter_title:
+          type: string
+          description: Human-readable chapter title
+        source_file:
+          type: string
+          description: Source file path
+        excerpt:
+          type: string
+          maxLength: 200
+          description: Relevant excerpt from source
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          enum:
+            - INVALID_REQUEST
+            - RATE_LIMIT_EXCEEDED
+            - SERVICE_UNAVAILABLE
+            - OPENAI_ERROR
+            - EMBEDDING_ERROR
+            - SEARCH_ERROR
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: object
+          additionalProperties: true
+          description: Additional error details
+
+tags:
+  - name: RAG
+    description: Retrieval-Augmented Generation endpoints

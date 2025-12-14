@@ -86,6 +86,11 @@ trailingSlash: false,
           label: 'Textbook',
         },
         {
+          to: '/chat',
+          label: 'Ask AI',
+          position: 'left',
+        },
+        {
           href: 'https://github.com/your-github-username/Ai-book',
           label: 'GitHub',
           position: 'right',
