@@ -5,7 +5,7 @@ Constitution Section VIII: Cohere + Qdrant ONLY (NO SQL)
 
 import os
 from functools import lru_cache
-from typing import Literal
+from typing import List, Literal
 
 from pydantic_settings import BaseSettings
 
@@ -38,7 +38,8 @@ class Settings(BaseSettings):
     # API settings
     api_title: str = "Physical AI Textbook RAG API"
     api_version: str = "1.0.0"
-    cors_origins: list[str] = ["http://localhost:3000", "https://physical-ai-book-one.vercel.app"]
+    # CORS origins - set via env var as JSON array: '["http://localhost:3000", "https://example.com"]'
+    cors_origins: List[str] = ["http://localhost:3000", "https://physical-ai-book-one.vercel.app"]
 
     # Logging
     log_level: str = "INFO"
