@@ -38,7 +38,7 @@ class Settings(BaseSettings):
     # API settings
     api_title: str = "Physical AI Textbook RAG API"
     api_version: str = "1.0.0"
-    cors_origins: list[str] = ["http://localhost:3000", "https://physical-ai-book-one.vercel.app"]
+    cors_origins: str = "http://localhost:3000", "https://physical-ai-book-one.vercel.app"
 
     # Logging
     log_level: str = "INFO"
